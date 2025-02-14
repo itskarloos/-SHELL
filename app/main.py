@@ -5,6 +5,12 @@ def main():
     while (True):
         sys.stdout.write("$ ")
         command = input()
+        commandFrag = command.split(" ")
+
+        if commandFrag[0] == "echo":
+            print(f"{commandFrag[0:]}")
+            continue
+
         if command == "exit 0":
             return
         if command:
