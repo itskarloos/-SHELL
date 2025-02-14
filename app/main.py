@@ -8,7 +8,8 @@ def main():
         commandFrag = command.split(" ")
 
         if commandFrag[0] == "echo":
-            print(f"{commandFrag[1:].join(" ")}")
+            output = commandFrag[1:].join(" ")
+            print(f"{output}")
             continue
 
         if command == "exit 0":
