@@ -13,7 +13,7 @@ def main():
             print(f"{result}")
             continue
         if commandFrag[0] == "type":
-            if commandFrag[1] == "echo" or commandFrag[1] == "exit":
+            if commandFrag[1] == "echo" or commandFrag[1] == "exit" or commandFrag[1] == "type":
                 print(f"{commandFrag[1]} is a shell builtin ")
                 continue
             else:
