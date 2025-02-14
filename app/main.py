@@ -11,6 +11,8 @@ def main():
     }
     for paths in sys_path:
         path_file[paths.split("/")[1]] = paths
+        path_file["cat"] = "/bin/cat"
+        path_file["ls"] = "/usr/bin/ls"
 
     while (True):
         sys.stdout.write("$ ")
