@@ -15,6 +15,7 @@ def main():
         path_file["ls"] = "/usr/bin/ls"
         path_file["cp"] = "/bin/cp"
         path_file["mkdir"] = "/bin/mkdir"
+        path_file["my_exe"] = "/tmp/foo/my_exe"
 
     while (True):
         sys.stdout.write("$ ")
