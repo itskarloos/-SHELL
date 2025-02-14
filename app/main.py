@@ -1,15 +1,17 @@
 import sys
+import os
 
 
 def main():
 
+    sys_path = os.environ["PATH"].split(":")
+    print(sys_path)
     path_file = {
-        "ls": "/usr/bin/ls",
-        "cat": "/bin/cat",
-        "usr": "/usr",
-        "local": "/usr/local",
-        "bin": "/usr/local/bin/"
+
     }
+    for paths in sys_path:
+        path_file[paths.split["/"][1]] = paths
+
     while (True):
         sys.stdout.write("$ ")
         command = input()
