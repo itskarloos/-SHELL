@@ -2,9 +2,13 @@ import sys
 
 
 def main():
+
     path_file = {
         "ls": "/usr/bin/ls",
-        "valid_command": "/usr/local/bin/valid_command",
+        "cat": "/bin/cat",
+        "usr": "/usr",
+        "local": "/usr/local",
+        "bin": "/usr/local/bin/"
     }
     while (True):
         sys.stdout.write("$ ")
