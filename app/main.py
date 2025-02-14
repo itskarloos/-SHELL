@@ -13,6 +13,7 @@ def main():
         path_file[paths.split("/")[1]] = paths
         path_file["cat"] = "/bin/cat"
         path_file["ls"] = "/usr/bin/ls"
+        path_file["cp"]= "/bin/cp"
 
     while (True):
         sys.stdout.write("$ ")
