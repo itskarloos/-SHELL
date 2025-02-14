@@ -12,6 +12,8 @@ def main():
     for paths in sys_path:
         path_file[paths.split["/"][1]] = paths
 
+    print(path_file)
+
     while (True):
         sys.stdout.write("$ ")
         command = input()
