@@ -26,6 +26,7 @@ def main():
                 continue
             elif commandFrag[1] in path_file:
                 print(f"{commandFrag[1]} is {path_file[commandFrag[1]]}")
+                continue
             else:
                 print(f"{commandFrag[1]}: not found")
                 continue
