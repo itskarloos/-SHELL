@@ -1,4 +1,3 @@
-from telnetlib import DO
 import sys
 
 
