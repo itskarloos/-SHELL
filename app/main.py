@@ -2,6 +2,10 @@ import sys
 
 
 def main():
+    path_file = {
+        "ls": "/usr/bin/ls",
+        "valid_command": "/usr/local/bin/valid_command",
+    }
     while (True):
         sys.stdout.write("$ ")
         command = input()
@@ -16,6 +20,8 @@ def main():
             if commandFrag[1] == "echo" or commandFrag[1] == "exit" or commandFrag[1] == "type":
                 print(f"{commandFrag[1]} is a shell builtin ")
                 continue
+            elif commandFrag[1] in path_file:
+                print(f"{commandFrag[1]} is {path_file[commandFrag[1]]}")
             else:
                 print(f"{commandFrag[1]}: not found")
                 continue
