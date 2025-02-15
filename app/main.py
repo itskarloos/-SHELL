@@ -3,50 +3,52 @@ import os
 
 
 def main():
-
-    sys_path = os.environ["PATH"].split(":")
+    sys_path = os.environ["PATH"].split(os.pathsep)
 
     path_file = {
-
+        "cat": "/bin/cat",
+        "ls": "/usr/bin/ls",
+        "cp": "/bin/cp",
+        "mkdir": "/bin/mkdir",
+        "my_exe": "/tmp/quz/my_exe",
     }
+
     for paths in sys_path:
-        path_file[paths.split("/")[1]] = paths
-        path_file["cat"] = "/bin/cat"
-        path_file["ls"] = "/usr/bin/ls"
-        path_file["cp"] = "/bin/cp"
-        path_file["mkdir"] = "/bin/mkdir"
-        path_file["my_exe"] = "/tmp/quz/my_exe"
+        parts = paths.split("/")
+        if len(parts) > 1:
+            path_file[parts[1]] = paths
 
-    while (True):
+    while True:
         sys.stdout.write("$ ")
-        command = input()
-        commandFrag = command.split(" ")
-
-        if commandFrag[0] == "echo":
-            output = commandFrag[1:]
-            result = " ".join(output)
-            print(f"{result}")
+        command = input().strip()
+        if not command:
             continue
 
-        if os.path.isfile(command.split(" ")[0]):
-            os.system(command)
-        else:
-            print(f"{command}: command not found")
+        commandFrag = command.split(" ")
 
-        if commandFrag[0] == "type":
-            if commandFrag[1] == "echo" or commandFrag[1] == "exit" or commandFrag[1] == "type":
-                print(f"{commandFrag[1]} is a shell builtin ")
-                continue
-            elif commandFrag[1] in path_file:
-                print(f"{commandFrag[1]} is {path_file[commandFrag[1]]}")
-                continue
-            else:
-                print(f"{commandFrag[1]}: not found")
-                continue
-        if command == "exit 0":
-            return
-        if command:
-            print(f"{command}: command not found")
+        if os.path.isfile(commandFrag[0]):  # Fix condition outside match
+            os.system(command)
+            continue
+
+        match commandFrag[0]:
+            case "echo":
+                output = commandFrag[1:]
+                print(" ".join(output))
+
+            case "type":
+                if commandFrag[1] in ["echo", "exit", "type"]:
+                    print(f"{commandFrag[1]} is a shell builtin")
+                elif commandFrag[1] in path_file:
+                    print(f"{commandFrag[1]} is {path_file[commandFrag[1]]}")
+                else:
+                    print(f"{commandFrag[1]}: not found")
+
+            case "exit":
+                exit_code = int(commandFrag[1]) if len(commandFrag) > 1 else 0
+                sys.exit(exit_code)
+
+            case _:
+                print(f"{command}: command not found")
 
 
 if __name__ == "__main__":
