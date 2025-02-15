@@ -1,52 +1,45 @@
 import sys
 import os
+import shutil
+import subprocess
 
 
 def main():
-
-    sys_path = os.environ["PATH"].split(":")
-
-    path_file = {
-
-    }
-    for paths in sys_path:
-        path_file[paths.split("/")[1]] = paths
-        path_file["cat"] = "/bin/cat"
-        path_file["ls"] = "/usr/bin/ls"
-        path_file["cp"] = "/bin/cp"
-        path_file["mkdir"] = "/bin/mkdir"
-        path_file["my_exe"] = "/tmp/quz/my_exe"
-
-    while (True):
+    while True:
         sys.stdout.write("$ ")
-        command = input()
-        commandFrag = command.split(" ")
-
-        if commandFrag[0] == "echo":
-            output = commandFrag[1:]
-            result = " ".join(output)
-            print(f"{result}")
+        command = input().strip()
+        if not command:
             continue
 
-        if os.path.isfile(command.split(" ")[0]):
-            os.system(command)
-        else:
-            print(f"{command}: command not found")
+        commandFrag = command.split(" ")
+        program = commandFrag[0]
 
-        if commandFrag[0] == "type":
-            if commandFrag[1] == "echo" or commandFrag[1] == "exit" or commandFrag[1] == "type":
-                print(f"{commandFrag[1]} is a shell builtin ")
-                continue
-            elif commandFrag[1] in path_file:
-                print(f"{commandFrag[1]} is {path_file[commandFrag[1]]}")
-                continue
-            else:
-                print(f"{commandFrag[1]}: not found")
-                continue
-        if command == "exit 0":
-            return
-        if command:
-            print(f"{command}: command not found")
+        # Check if it's a built-in command
+        match program:
+            case "echo":
+                print(" ".join(commandFrag[1:]))
+
+            case "type":
+                if commandFrag[1] in ["echo", "exit", "type"]:
+                    print(f"{commandFrag[1]} is a shell builtin")
+                elif shutil.which(commandFrag[1]):  # Check if it's in PATH
+                    print(f"{commandFrag[1]} is {shutil.which(commandFrag[1])}")
+                else:
+                    print(f"{commandFrag[1]}: not found")
+
+            case "exit":
+                exit_code = int(commandFrag[1]) if len(commandFrag) > 1 else 0
+                sys.exit(exit_code)
+
+            case _:
+                executable_path = shutil.which(program)
+                if executable_path:  # If found in PATH, execute it
+                    try:
+                        subprocess.run(commandFrag)  # Run with arguments
+                    except Exception as e:
+                        print(f"Error executing {program}: {e}")
+                else:
+                    print(f"{program}: command not found")
 
 
 if __name__ == "__main__":
