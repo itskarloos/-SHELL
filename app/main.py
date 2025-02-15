@@ -27,6 +27,12 @@ def main():
             result = " ".join(output)
             print(f"{result}")
             continue
+
+        if commandFrag[0] in path_file:
+            print(f"Program has passed {len(commandFrag)} args")
+            for command in commandFrag:
+                print(f"Arg: {command}")
+                continue
         if commandFrag[0] == "type":
             if commandFrag[1] == "echo" or commandFrag[1] == "exit" or commandFrag[1] == "type":
                 print(f"{commandFrag[1]} is a shell builtin ")
