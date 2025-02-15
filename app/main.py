@@ -20,7 +20,7 @@ def main():
                 print(" ".join(commandFrag[1:]))
 
             case "type":
-                if commandFrag[1] in ["echo", "exit", "type"]:
+                if commandFrag[1] in ["echo", "exit", "type","pwd"]:
                     print(f"{commandFrag[1]} is a shell builtin")
                 elif shutil.which(commandFrag[1]):  # Check if it's in PATH
                     print(f"{commandFrag[1]} is {shutil.which(commandFrag[1])}")
@@ -44,3 +44,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
