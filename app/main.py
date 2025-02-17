@@ -43,7 +43,7 @@ def main():
                     print(f"{commandFrag[1]} is {
                           shutil.which(commandFrag[1])}")
 
-        if os.path.isfile(commandFrag[0]):  # Fix condition outside match
+        if os.path.isfile(commandFrag[0]):
             os.system(command)
             continue
 
