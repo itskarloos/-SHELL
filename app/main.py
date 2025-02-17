@@ -29,6 +29,7 @@ def main():
 
         commandFrag = command.split(" ")
 
+
         program = commandFrag[0]
 
         # Check if it's a built-in command
@@ -47,12 +48,15 @@ def main():
             os.system(command)
             continue
 
+
         match commandFrag[0]:
             case "echo":
                 output = commandFrag[1:]
                 print(" ".join(output))
+
             case "pwd":
                 print(os.getcwd(command))
+
             case "type":
                 if commandFrag[1] in ["echo", "exit", "type"]:
                     print(f"{commandFrag[1]} is a shell builtin")
@@ -67,6 +71,7 @@ def main():
                 sys.exit(exit_code)
 
             case _:
+
                 executable_path = shutil.which(program)
                 if executable_path:  # If found in PATH, execute it
                     try:
@@ -75,6 +80,7 @@ def main():
                         print(f"Error executing {program}: {e}")
                 else:
                     print(f"{program}: command not found")
+
 
 
 if __name__ == "__main__":
