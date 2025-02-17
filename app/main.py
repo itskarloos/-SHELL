@@ -1,8 +1,11 @@
 import sys
 import os
+import shutil
+import subprocess
 
 
 def main():
+
     sys_path = os.environ["PATH"].split(os.pathsep)
 
     path_file = {
@@ -26,20 +29,40 @@ def main():
 
         commandFrag = command.split(" ")
 
-        if os.path.isfile(commandFrag[0]):  # Fix condition outside match
+
+        program = commandFrag[0]
+
+        # Check if it's a built-in command
+        match program:
+            case "echo":
+                print(" ".join(commandFrag[1:]))
+
+            case "type":
+                if commandFrag[1] in ["echo", "exit", "type", "pwd"]:
+                    print(f"{commandFrag[1]} is a shell builtin")
+                elif shutil.which(commandFrag[1]):  # Check if it's in PATH
+                    print(f"{commandFrag[1]} is {
+                          shutil.which(commandFrag[1])}")
+
+        if os.path.isfile(commandFrag[0]):
             os.system(command)
             continue
+
 
         match commandFrag[0]:
             case "echo":
                 output = commandFrag[1:]
                 print(" ".join(output))
 
+            case "pwd":
+                print(os.getcwd(command))
+
             case "type":
                 if commandFrag[1] in ["echo", "exit", "type"]:
                     print(f"{commandFrag[1]} is a shell builtin")
                 elif commandFrag[1] in path_file:
                     print(f"{commandFrag[1]} is {path_file[commandFrag[1]]}")
+
                 else:
                     print(f"{commandFrag[1]}: not found")
 
@@ -48,7 +71,16 @@ def main():
                 sys.exit(exit_code)
 
             case _:
-                print(f"{command}: command not found")
+
+                executable_path = shutil.which(program)
+                if executable_path:  # If found in PATH, execute it
+                    try:
+                        subprocess.run(commandFrag)  # Run with arguments
+                    except Exception as e:
+                        print(f"Error executing {program}: {e}")
+                else:
+                    print(f"{program}: command not found")
+
 
 
 if __name__ == "__main__":
